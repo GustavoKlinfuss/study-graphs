@@ -34,7 +34,7 @@ class Grafo:
         contador = 0
 
         for i in range(len(self.matriz_adjacencias)):
-            if self.matriz_adjacencias[i][vertice] != np.inf:
+            if self.tem_aresta(i, vertice):
                 contador += 1
 
         print(f'Grau de saída do vértice {vertice} é: {contador}')
@@ -43,7 +43,7 @@ class Grafo:
         contador = 0
 
         for i in range(len(self.matriz_adjacencias)):
-            if (self.matriz_adjacencias[i][vertice] != np.inf) or (self.matriz_adjacencias[vertice][i] != np.inf):
+            if self.tem_aresta(i, vertice) or self.tem_aresta(vertice, i):
                 contador += 1
 
         print(f'Grau do vértice {vertice} é: {contador}')
@@ -87,15 +87,12 @@ class Grafo:
 ###########################################
 
 g = Grafo(4)
-# g.add_edge(0, 3, 10)
-# g.add_edge(0, 1, 40)
-# g.add_edge(1, 2, 15)
-# g.add_edge(0, 2, 15)
-# g.add_edge(3, 0, 40)
-# g.add_edge(3, 2, 50)
-# g.remove_edge(0, 3)
+g.adiciona_aresta(0, 3, 10)
+g.imprimir()
+g.remove_aresta(0, 3)
 g.imprimir()
 
+g.adiciona_aresta(1, 0, 40)
 g.adiciona_aresta(0, 1, 10)
 g.adiciona_aresta(1, 2, 10)
 g.adiciona_aresta(3, 0, 10)
