@@ -1,82 +1,85 @@
 import numpy as np
-from functools import reduce
 
 
 class Grafo:
     def __init__(self, vertices_number):
-        self.order = vertices_number
-        self.size = 0
+        self.ordem = vertices_number
+        self.tamanho = 0
         self.matriz_adjacencias = np.ones((vertices_number, vertices_number)) * np.inf
 
-    def adiciona_aresta(self, u, v, weight):
-        if not self.tem_aresta(u, v):
-            self.matriz_adjacencias[u][v] = weight
-            self.size += 1
-        print(f'Aresta adicionada: [{u}, {v}] - Peso {weight}')
+    def adiciona_aresta(self, v_origem, v_destino, peso):
+        if not self.tem_aresta(v_origem, v_destino):
+            self.matriz_adjacencias[v_origem][v_destino] = peso
+            self.tamanho += 1
+        print(f'Aresta adicionada: [{v_origem}, {v_destino}] - Peso {peso}')
 
-    def remove_aresta(self, u, v):
-        if self.tem_aresta(u, v):
-            self.matriz_adjacencias[u][v] = np.inf
-            self.size -= 1
+    def remove_aresta(self, v_origem, v_destino):
+        if self.tem_aresta(v_origem, v_destino):
+            self.matriz_adjacencias[v_origem][v_destino] = np.inf
+            self.tamanho -= 1
 
-    def tem_aresta(self, u, v):
-        return self.matriz_adjacencias[u][v] != np.inf
+    def tem_aresta(self, v_origem, v_destino):
+        return self.matriz_adjacencias[v_origem][v_destino] != np.inf
 
-    def grau_entrada(self, u):
+    def grau_entrada(self, vertice):
         contador = 0
 
-        for linha in self.matriz_adjacencias[u]:
+        for linha in self.matriz_adjacencias[vertice]:
             if linha != np.inf:
                 contador += 1
 
-        print(f'Grau de entrada do vértice {u} é: {contador}')
+        print(f'Grau de entrada do vértice {vertice} é: {contador}')
 
-    def grau_saida(self, u):
-        contador = 0
-
-        for index in range(len(self.matriz_adjacencias)):
-            if self.matriz_adjacencias[index][u] != np.inf:
-                contador += 1
-
-        print(f'Grau de saída do vértice {u} é: {contador}')
-
-    def grau(self, u):
+    def grau_saida(self, vertice):
         contador = 0
 
         for i in range(len(self.matriz_adjacencias)):
-            if (self.matriz_adjacencias[i][u] != np.inf) or (self.matriz_adjacencias[u][i] != np.inf):
+            if self.matriz_adjacencias[i][vertice] != np.inf:
                 contador += 1
 
-        print(f'Grau do vértice {u} é: {contador}')
+        print(f'Grau de saída do vértice {vertice} é: {contador}')
+
+    def grau(self, vertice):
+        contador = 0
+
+        for i in range(len(self.matriz_adjacencias)):
+            if (self.matriz_adjacencias[i][vertice] != np.inf) or (self.matriz_adjacencias[vertice][i] != np.inf):
+                contador += 1
+
+        print(f'Grau do vértice {vertice} é: {contador}')
 
     def imprimir(self):
         print(self.matriz_adjacencias)
 
-    def construir_matriz_alcancabilidade(self):
+    def warshall(self):
         matriz_alcancabilidade = self.matriz_adjacencias
 
-        for i in range(self.order):
-            for j in range(self.order):
+        for i in range(self.ordem):
+            for j in range(self.ordem):
                 if matriz_alcancabilidade[i, j] != np.inf:
                     matriz_alcancabilidade[i, j] = 1
                 else:
                     matriz_alcancabilidade[i, j] = 0
 
-        for k in range(self.order):
-            for i in range(self.order):
-                for j in range(self.order):
+        for k in range(self.ordem):
+            for i in range(self.ordem):
+                for j in range(self.ordem):
                     matriz_alcancabilidade[i, j] = matriz_alcancabilidade[i, j] or (matriz_alcancabilidade[i, k] and matriz_alcancabilidade[k, j])
 
         return matriz_alcancabilidade
 
-    def imprimir_matriz_alcancabilidade(self):
-        print(self.construir_matriz_alcancabilidade())
+    def dijkstra(self, vertice_origem):
+        visitados = []
+        custos = [[np.inf, 0] for i in range(self.ordem)]
+        custos[vertice_origem][0] = 0
+
+        print(f"dijkstra: {custos}")
 
     def existe_caminho(self, u, v):
         if self.matriz_adjacencias[u, v]:
             return True
 
-        matriz_alcancebilidade = self.construir_matriz_alcancabilidade()
+        matriz_alcancebilidade = self.warshall()
 
         return True if matriz_alcancebilidade[u, v] else False
 
@@ -91,10 +94,13 @@ g = Grafo(4)
 # g.add_edge(3, 0, 40)
 # g.add_edge(3, 2, 50)
 # g.remove_edge(0, 3)
+g.imprimir()
 
 g.adiciona_aresta(0, 1, 10)
 g.adiciona_aresta(1, 2, 10)
 g.adiciona_aresta(3, 0, 10)
+
+g.imprimir()
 
 g.grau_entrada(0)
 g.grau_entrada(1)
@@ -108,4 +114,4 @@ g.grau(0)
 g.grau(1)
 g.grau(2)
 g.imprimir()
-g.imprimir_matriz_alcancabilidade()
+print(f'Matriz de alcançabilidade:\n{g.warshall()}')
