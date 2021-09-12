@@ -56,10 +56,7 @@ class Grafo:
 
         for i in range(self.ordem):
             for j in range(self.ordem):
-                if matriz_alcancabilidade[i, j] != np.inf:
-                    matriz_alcancabilidade[i, j] = 1
-                else:
-                    matriz_alcancabilidade[i, j] = 0
+                matriz_alcancabilidade[i, j] = int(matriz_alcancabilidade[i, j] != np.inf)
 
         for k in range(self.ordem):
             for i in range(self.ordem):
