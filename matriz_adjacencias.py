@@ -72,18 +72,14 @@ class Grafo:
         rot_vt_corrente = rot_vt_origem
 
         while len(visitados) < self.ordem:
-            vertices_adjacentes = self.obter_adjacente(rot_vt_corrente)
-            for adj in vertices_adjacentes:
-                rotulo_adj = adj[0]
-                valor_adj = adj[1]
+            for adj in self.obter_adjacente(rot_vt_corrente):
+                rotulo_adj, valor_adj = adj
                 if rotulo_adj not in visitados:
                     acumulado = valor_adj + custos[rot_vt_corrente][0]
                     if acumulado < custos[rotulo_adj][0]:
-                        custos[rotulo_adj][0] = acumulado
-                        custos[rotulo_adj][1] = rot_vt_corrente
+                        custos[rotulo_adj] = acumulado, rot_vt_corrente
             visitados.append(rot_vt_corrente)
             rot_vt_corrente = self.obter_rotulo_menor_VA(visitados, custos)
-            # print(f"dijkstra: {custos}")
         return self.obter_menor_caminho(custos, rot_vt_origem, rot_vt_destino)
 
     @staticmethod
