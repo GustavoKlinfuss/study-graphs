@@ -26,7 +26,7 @@ class Grafo:
         for linha in self.matriz_adjacencias[vertice]:
             if linha != np.inf:
                 contador += 1
-        print(f'Grau de entrada do vértice {vertice} é: {contador}')
+        # print(f'Grau de entrada do vértice {vertice} é: {contador}')
         return contador
 
     def grau_saida(self, vertice):
@@ -34,7 +34,7 @@ class Grafo:
         for i in range(len(self.matriz_adjacencias)):
             if self.tem_aresta(i, vertice):
                 contador += 1
-        print(f'Grau de saída do vértice {vertice} é: {contador}')
+        # print(f'Grau de saída do vértice {vertice} é: {contador}')
         return contador
 
     def grau(self, vertice):
@@ -42,7 +42,7 @@ class Grafo:
         for i in range(len(self.matriz_adjacencias)):
             if self.tem_aresta(i, vertice) or self.tem_aresta(vertice, i):
                 contador += 1
-        print(f'Grau do vértice {vertice} é: {contador}')
+        # print(f'Grau do vértice {vertice} é: {contador}')
         return contador
 
     def imprimir(self):
@@ -133,18 +133,18 @@ class Grafo:
         return self.strong_conected() and self.equal_degrees()
 
     def eulerian_path(self):
-        oddDegreeNodesWithDiff1 = 0
-        evenDegreeNodes = 0
+        odd_degree_nodes_with_diff1 = 0
+        even_degree_nodes = 0
         for node in range(self.ordem):
             outdegree = self.grau_saida(node)
             indegree = self.grau_entrada(node)
-            degree = outdegree+indegree
+            degree = self.grau(node)
             diff = (outdegree - indegree) if (0 <= (outdegree - indegree)) else (indegree - outdegree)
             if (1 == degree % 2) and (1 == diff):
-                oddDegreeNodesWithDiff1+=1
-            elif (0 == degree % 2):
-                evenDegreeNodes+=1
-        return self.strong_conected() and (2 == oddDegreeNodesWithDiff1) and (self.ordem == (oddDegreeNodesWithDiff1+evenDegreeNodes))
+                odd_degree_nodes_with_diff1 += 1
+            elif 0 == degree % 2:
+                even_degree_nodes += 1
+        return self.strong_conected() and (2 == odd_degree_nodes_with_diff1) and (self.ordem == (odd_degree_nodes_with_diff1+even_degree_nodes))
 
     def is_Eulerian(self):
         # validacao se o grafo possui um circuito euleriano
@@ -183,10 +183,12 @@ def teste():
     g.grau(1)
     g.grau(2)
     g.imprimir()
-    print(f'Matriz de alcançabilidade:\n{g.warshall()}')
+
+    print('\nChamada Metodo is_euleriano, retorno: ', end='')
+    print(f'{g.is_Eulerian()}\n')
 
 
-def teste_dijkstra():
+def teste_warshall_dijkstra():
     g = Grafo(7)
     g.adiciona_aresta(0, 1, 3)
     g.adiciona_aresta(1, 4, 4)
@@ -196,13 +198,16 @@ def teste_dijkstra():
     g.adiciona_aresta(2, 0, 1)
     g.adiciona_aresta(3, 2, 1)
     g.adiciona_aresta(3, 4, 150)
-    g.adiciona_aresta(6, 0, 4)
+    g.adiciona_aresta(6, 4, 4)
     g.adiciona_aresta(6, 5, 7)
     g.adiciona_aresta(3, 6, 25)
     g.adiciona_aresta(0, 3, 5)
     g.imprimir()
-    print(g.dijkstra(3, 6))
+    dijkstra = g.dijkstra(3, 6)
+    warshall = g.warshall()
+    print(dijkstra)
+    print(warshall)
 
 
 teste()
-teste_dijkstra()
+teste_warshall_dijkstra()
