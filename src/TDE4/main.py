@@ -5,6 +5,10 @@ from tqdm import tqdm
 
 
 def main():
+    execute(1000)
+
+
+def execute(vertex_limit=None):
     G = Graph()
     sender = ''
     emails = []
@@ -33,10 +37,16 @@ def main():
                 G.add_vertex(email)
                 G.add_edge(sender, email, 1)
         file.close()
-    print(G.number_of_vertexes())
-    print(G.number_of_edges())
-    print(G.find_20_highest_in_degree())
-    print(G.find_20_highest_out_degree())
+        if vertex_limit and len(G.vlist) > vertex_limit:
+            break
+
+    origin_mail = '40enron@enron.com'
+    dest_mail = 'sandra.f.brawner@enron.com'
+
+    deep_search_result = G.deep_search(origin_mail, dest_mail)
+    print('Busca em profundidade:')
+    print(f'\tExist path between {origin_mail} and {dest_mail}: {deep_search_result[0]}')
+    print(f'\tPath: {deep_search_result[1]}')
 
 
 if __name__ == '__main__':

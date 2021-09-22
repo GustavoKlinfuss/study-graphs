@@ -136,6 +136,31 @@ class Graph:
             del values[index]        
         return high20
 
+    def deep_search(self, origin_vertex, dest_vertex):
+        if origin_vertex not in self.vlist:
+            print(f'Vertex {origin_vertex} does not belong to graph!')
+            return False, []
+        if dest_vertex not in self.vlist:
+            print(f'Vertex {origin_vertex} does not belong to graph!')
+            return False, []
+
+        visited = []
+        stack = [origin_vertex]
+
+        while stack:
+            verified_vertex = stack.pop()
+            if verified_vertex not in visited:
+                visited.append(verified_vertex)
+                if verified_vertex == dest_vertex:
+                    return True, visited
+                not_visited_adjacent = [vertex for vertex in self.get_adjacent_vertexes(verified_vertex) if vertex not in visited]
+                stack += not_visited_adjacent
+
+        return False, []
+
+    def get_adjacent_vertexes(self, vertex):
+        return [i.dest for i in self.edges if i.origin == vertex]
+
     # def print_adjacency_list(self):
     #     for key, vlist in self.edges.items():
     #         print(key + ' : ', end='')
