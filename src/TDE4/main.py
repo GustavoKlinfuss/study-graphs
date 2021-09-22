@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 
 def main():
-    execute(1000)
+    execute(1500)
 
 
 def execute(vertex_limit=None):
@@ -44,9 +44,16 @@ def execute(vertex_limit=None):
     dest_mail = 'sandra.f.brawner@enron.com'
 
     deep_search_result = G.deep_search(origin_mail, dest_mail)
-    print('Busca em profundidade:')
-    print(f'\tExist path between {origin_mail} and {dest_mail}: {deep_search_result[0]}')
+    print(f'Deep Search - {origin_mail} to {dest_mail}:')
+    print(f'\tExist path: {deep_search_result[0]}')
     print(f'\tPath: {deep_search_result[1]}')
+    print(f'\tCost: {len(deep_search_result[1])}')
+
+    breath_search_result = G.breath_search(origin_mail, dest_mail)
+    print(f'Breath Search - {origin_mail} to {dest_mail}:')
+    print(f'\tExist path between {origin_mail} and {dest_mail}: {breath_search_result[0]}')
+    print(f'\tPath: {breath_search_result[1]}')
+    print(f'\tCost: {len(breath_search_result[1])}')
 
 
 if __name__ == '__main__':

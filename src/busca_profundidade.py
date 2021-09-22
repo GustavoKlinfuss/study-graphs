@@ -22,6 +22,18 @@ def DFG_recursive(graph, node, visited=None):
     return visited
 
 
+def BFG_iterative(graph, start_node):
+    visited = []
+    stack = [start_node]
+
+    while stack:
+        s = stack.pop(0)
+        if s not in visited:
+            visited.append(s)
+            stack += [x for x in graph[s] if x not in visited][::1]
+    return visited
+
+
 G = {
     'A': ['B', 'C'],
     'B': ['D', 'E'],
@@ -50,6 +62,8 @@ H = {
 
 print(DFG_iterative(G, 'A'))
 print(DFG_recursive(G, 'A'))
+
+print(BFG_iterative(G, 'A'))
 
 print(DFG_iterative(H, '1'))
 print(DFG_recursive(H, '1'))

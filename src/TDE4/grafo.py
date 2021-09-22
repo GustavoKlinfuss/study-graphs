@@ -153,8 +153,32 @@ class Graph:
                 visited.append(verified_vertex)
                 if verified_vertex == dest_vertex:
                     return True, visited
-                not_visited_adjacent = [vertex for vertex in self.get_adjacent_vertexes(verified_vertex) if vertex not in visited]
+                adjacent = self.get_adjacent_vertexes(verified_vertex)[::-1]
+                not_visited_adjacent = [vertex for vertex in adjacent if vertex not in visited]
                 stack += not_visited_adjacent
+
+        return False, []
+
+    def breath_search(self, origin_vertex, dest_vertex):
+        if origin_vertex not in self.vlist:
+            print(f'Vertex {origin_vertex} does not belong to graph!')
+            return False, []
+        if dest_vertex not in self.vlist:
+            print(f'Vertex {origin_vertex} does not belong to graph!')
+            return False, []
+
+        visited = []
+        queue = [origin_vertex]
+
+        while queue:
+            verified_vertex = queue.pop(0)
+            if verified_vertex not in visited:
+                visited.append(verified_vertex)
+                if verified_vertex == dest_vertex:
+                    return True, visited
+                adjacent = self.get_adjacent_vertexes(verified_vertex)
+                not_visited_adjacent = [vertex for vertex in adjacent if vertex not in visited]
+                queue += not_visited_adjacent
 
         return False, []
 
