@@ -18,14 +18,15 @@ def execute(vertex_limit=None):
         file = open(filename, 'r')
         for line in file:
             if line.startswith('From'):
-                sender = line[6:].strip('\n')
+                line = line[6:]
+                sender = line.strip('\n')
             elif line.startswith('To'):
                 line = line[4:]
                 aux = line.strip('\n ')
-                emails = aux.split(',')
+                emails = [e.strip() for e in aux.split(',')]
             elif line.startswith('\t'):
                 aux = line.strip('\n\t ')
-                emails.extend(aux.split(','))
+                emails.extend([e.strip() for e in aux.split(',')])
             elif line.startswith('Subject'):
                 break
             else:
