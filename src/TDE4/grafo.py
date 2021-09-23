@@ -141,7 +141,7 @@ class Graph:
             print(f'Vertex {origin_vertex} does not belong to graph!')
             return False, []
         if dest_vertex not in self.vlist:
-            print(f'Vertex {origin_vertex} does not belong to graph!')
+            print(f'Vertex {dest_vertex} does not belong to graph!')
             return False, []
 
         visited = []
@@ -159,12 +159,12 @@ class Graph:
 
         return False, []
 
-    def breath_search(self, origin_vertex, dest_vertex):
+    def breadth_search(self, origin_vertex, dest_vertex):
         if origin_vertex not in self.vlist:
             print(f'Vertex {origin_vertex} does not belong to graph!')
             return False, []
         if dest_vertex not in self.vlist:
-            print(f'Vertex {origin_vertex} does not belong to graph!')
+            print(f'Vertex {dest_vertex} does not belong to graph!')
             return False, []
 
         visited = []
@@ -181,6 +181,19 @@ class Graph:
                 queue += not_visited_adjacent
 
         return False, []
+
+    def find_v_within_d(self, origin_vertex, distance):
+        if origin_vertex not in self.vlist:
+            print(f'Vertex {origin_vertex} does not belong to graph!')
+            return False, []
+
+        v_in_distance = []
+        for v in self.vlist:
+            found, steps = self.breadth_search(origin_vertex, v)
+            if found and len(steps) == distance:
+                v_in_distance.append(v)
+        return v_in_distance
+
 
     def get_adjacent_vertexes(self, vertex):
         return [i.dest for i in self.edges if i.origin == vertex]

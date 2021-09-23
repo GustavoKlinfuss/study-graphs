@@ -50,7 +50,7 @@ def execute(vertex_limit=None):
     print(f'\tPath: {deep_search_result[1]}')
     print(f'\tCost: {len(deep_search_result[1])}')
 
-    breath_search_result = G.breath_search(origin_mail, dest_mail)
+    breath_search_result = G.breadth_search(origin_mail, dest_mail)
     print(f'Breath Search - {origin_mail} to {dest_mail}:')
     print(f'\tExist path between {origin_mail} and {dest_mail}: {breath_search_result[0]}')
     print(f'\tPath: {breath_search_result[1]}')
