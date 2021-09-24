@@ -182,17 +182,39 @@ class Graph:
 
         return False, []
 
+    # def find_v_within_d(self, origin_vertex, distance):
+    #     if origin_vertex not in self.vlist:
+    #         print(f'Vertex {origin_vertex} does not belong to graph!')
+    #         return False, []
+    #
+    #     v_in_distance = []
+    #     for v in self.vlist:
+    #         found, steps = self.breadth_search(origin_vertex, v)
+    #         if found and len(steps) - 1 == distance:
+    #             v_in_distance.append(v)
+    #     return v_in_distance
+
     def find_v_within_d(self, origin_vertex, distance):
         if origin_vertex not in self.vlist:
             print(f'Vertex {origin_vertex} does not belong to graph!')
             return False, []
 
-        v_in_distance = []
-        for v in self.vlist:
-            found, steps = self.breadth_search(origin_vertex, v)
-            if found and len(steps) == distance:
-                v_in_distance.append(v)
-        return v_in_distance
+        visited = []
+        queue = [origin_vertex]
+
+        for i in range(distance):
+            new_queue = []
+
+            for element in queue:
+                if element not in visited:
+                    visited.append(element)
+                    adjacent = self.get_adjacent_vertexes(element)
+                    not_visited_adjacent = [vertex for vertex in adjacent if vertex not in visited]
+                    new_queue += not_visited_adjacent
+
+            queue = new_queue
+
+        return queue
 
 
     def get_adjacent_vertexes(self, vertex):

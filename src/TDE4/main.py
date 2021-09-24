@@ -56,6 +56,9 @@ def execute(vertex_limit=None):
     print(f'\tPath: {breath_search_result[1]}')
     print(f'\tCost: {len(breath_search_result[1])}')
 
+    found = G.find_v_within_d(origin_mail, 3)
+    print(found)
+
 
 if __name__ == '__main__':
     main()
